@@ -1,1 +1,1 @@
-console.log("​Soy el archivo cliente.js​");
+const inquirer = require("inquirer");
