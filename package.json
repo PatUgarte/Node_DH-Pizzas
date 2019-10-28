@@ -11,5 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "inquirer": "^7.0.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatUgarte/DH-Pizzas.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PatUgarte/DH-Pizzas/issues"
+  },
+  "homepage": "https://github.com/PatUgarte/DH-Pizzas#readme"
 }
