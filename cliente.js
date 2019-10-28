@@ -24,16 +24,41 @@ let questions = [
         choices: ["Individual", "Mediana", "Grande"]
     },
     {
+        type: "confirm",
+        name: "clientConfirmDrink",
+        message: "¿Querés agregar una bebida al pedido?",
+        default: true
+    },
+    {
         type: "list",
         name: "clientDrink",
         message: "Elegí la bebida:",
-        choices: ["Coca-Cola", "Coca-Cola Zero", "Sprite", "Manaos de Uva", "Schweppes Pomelo"]
+        choices: ["Coca-Cola", "Coca-Cola Zero", "Sprite", "Manaos de Uva", "Schweppes Pomelo"],
+        when: ({ clientConfirmDrink }) => clientConfirmDrink,
     },
     {
         type: "checkbox",
         name: "clientEmpanadasChoice",
         message: "¿Qué gustos de empanadas querés?",
-        choices: ["Carne Suave","Carne Picante","Jamón y Queso","Queso y Cebolla","Caprese","Ciruela, Queso y Panceta"]
+        choices: ["Carne Suave", "Carne Picante", "Jamón y Queso", "Queso y Cebolla", "Caprese", "Ciruela, Queso y Panceta"]
+    },
+    {
+        type: "confirm",
+        name: "clientConfirmDelivery",
+        message: "¿Querés que te lo enviemos al domicilio?",
+        default: false
+    },
+    {
+        type: "input",
+        name: "clientAdress",
+        message: "Ingesá tu dirección:",
+        when: ({ clientConfirmDelivery }) => clientConfirmDelivery,
+        validate: (clientAdress) => clientAdress.length > 5 ? true : "¡Ingresá una dirección válida!"
+    },
+    {
+        type: "confirm",
+        name: "clientConfirmUsualClient",
+        message: "¿Sos cliente habitual?"
     }
 ];
 
