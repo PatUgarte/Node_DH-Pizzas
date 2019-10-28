@@ -5,23 +5,27 @@ let questions = [
         type: "input",
         name: "clientName",
         message: "Ingresá tu nombre:",
+        validate: (clientName) => clientName.length >= 3 ? true : "¡Ingrese un nombre válido!"
     },
     {
         type: "input",
         name: "clientPhone",
-        message: "Ingresá tu número de teléfono:",
+        message: "Ingresá tu número de teléfono (Sin guiones ni espacios):",
+        validate: (clientPhone) => clientPhone.length >= 8 && !isNaN(clientPhone) ? true : "¡Ingrese un teléfono válido!"
     },
     {
         type: "rawlist",
         name: "clientPizzaChoice",
         message: "Elegí el gusto de la pizza:",
-        choices: ["Mozarella", "Fugazetta", "Napolitana", "Calabresa", "Cuatro Quesos", "Provolone"]
+        choices: ["Fugazzetta", "Mozzarella", "Napolitana", "Calabresa", "Cuatro Quesos", "Provolone"],
+        default: 1
     },
     {
         type: "list",
         name: "clientPizzaSize",
         message: "Elegí el tamaño de la pizza:",
-        choices: ["Individual", "Mediana", "Grande"]
+        choices: ["Individual", "Mediana", "Grande"],
+        default: 2
     },
     {
         type: "confirm",
@@ -35,12 +39,7 @@ let questions = [
         message: "Elegí la bebida:",
         choices: ["Coca-Cola", "Coca-Cola Zero", "Sprite", "Manaos de Uva", "Schweppes Pomelo"],
         when: ({ clientConfirmDrink }) => clientConfirmDrink,
-    },
-    {
-        type: "checkbox",
-        name: "clientEmpanadasChoice",
-        message: "¿Qué gustos de empanadas querés?",
-        choices: ["Carne Suave", "Carne Picante", "Jamón y Queso", "Queso y Cebolla", "Caprese", "Ciruela, Queso y Panceta"]
+        default: 0
     },
     {
         type: "confirm",
@@ -59,6 +58,14 @@ let questions = [
         type: "confirm",
         name: "clientConfirmUsualClient",
         message: "¿Sos cliente habitual?"
+    },
+    {
+        type: "checkbox",
+        name: "clientEmpanadasChoice",
+        message: "Por ser cliente habitual te regalamos hasta tres empanadas ¿Qué gustos querés?",
+        choices: ["Carne Suave", "Carne Picante", "Jamón y Queso", "Queso y Cebolla", "Caprese", "Ciruela, Queso y Panceta"],
+        when: ({ clientConfirmUsualClient }) => clientConfirmUsualClient,
+        validate: (empanadas) => empanadas.length <= 3 ? true : "¡Sólo puede elegir hasta tres empanadas!"
     }
 ];
 
