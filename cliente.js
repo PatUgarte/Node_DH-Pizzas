@@ -1,4 +1,13 @@
+//Módulo instalado de terceros
 const inquirer = require("inquirer");
+//Módulo nativo
+const fileSystem = require("fs");
+
+const jsonPath = __dirname + "/pedidos.json";
+
+let content = fileSystem.readFileSync(jsonPath, { encoding: "utf8" });
+console.log(content);
+console.log(typeof content);
 
 let questions = [
     {
