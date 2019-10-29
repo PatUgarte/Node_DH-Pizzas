@@ -26,11 +26,12 @@ let questions = [
         message: "Elegí el tamaño de la pizza:",
         choices: ["Individual", "Mediana", "Grande"],
         default: 2,
+        suffix: "\t Individual(+$430) / Mediana(+$560) / Grande(+$650)",
     },
     {
         type: "confirm",
         name: "clientConfirmDrink",
-        message: "¿Querés agregar una bebida al pedido?",
+        message: "¿Querés agregar una bebida al pedido? (+$80)",
         default: true,
     },
     {
@@ -44,7 +45,7 @@ let questions = [
     {
         type: "confirm",
         name: "clientConfirmDelivery",
-        message: "¿Querés que te lo enviemos al domicilio?",
+        message: "¿Querés que te lo enviemos al domicilio? (+$20)",
         default: false,
     },
     {
@@ -72,23 +73,47 @@ let questions = [
 inquirer
     .prompt(questions)
     .then(answers => {
+        let pizzaPrices = { Individual: 430, Mediana: 560, Grande: 650, };
+        let drinkPrice = 0;
+        let deliveryPrice = 0;
+        let pizzaDiscounts = { Individual: 3, Mediana: 5, Grande: 8, };
+
         console.log(`\n=================== Resumen de tu pedido ===================\n`);
         console.log(`Tus datos son  -   Nombre: ${answers.clientName}   /   Teléfono: ${answers.clientPhone}.`);
-        answers.clientConfirmDelivery ?
-            console.log(`Dirección para la entrega del pedido: ${answers.clientAdress}.`)
-            : console.log(`Nos indicaste que pasarás a retirar tu pedido por el local.`);
+        if (answers.clientConfirmDelivery) {
+            console.log(`Dirección para la entrega del pedido: ${answers.clientAdress}.`);
+            deliveryPrice += 20;
+        } else {
+            console.log(`Nos indicaste que pasarás a retirar tu pedido por el local.`);
+        }
+
         console.log(`\n=================== Productos solicitados ===================\n`);
+        //let sizeWithoutPrice = answers.clientPizzaChoice.split(" ")[0];
         console.log(`\t> Pizza: ${answers.clientPizzaChoice}`);
         console.log(`\t> Tamaño: ${answers.clientPizzaSize}`);
-        answers.clientConfirmDrink ?
+        if(answers.clientConfirmDrink){
             console.log(`\t> Bebida: ${answers.clientDrink}`)
-            : "";
+            drinkPrice += 80;
+        } else {
+            pizzaDiscounts[answers.clientPizzaSize] *= 0;
+        }
         answers.clientConfirmUsualClient ?
             answers.clientEmpanadasChoice.length > 0 ?
                 imprimirEmpanadas(answers.clientEmpanadasChoice)
                 : console.log(`\nSos un/a Cliente Habitual pero no estás llevando ninguna de las empanada de cortesía.`)
             : console.log(`\nSi fueras un/a Cliente Habitual te entregaríamos hasta tres empanadas de cortesía con tu compra.`);
-        
+
+        let productsPrice = pizzaPrices[answers.clientPizzaSize] + drinkPrice;
+        let discountPercentage = pizzaDiscounts[answers.clientPizzaSize];
+        let finalPrice = (productsPrice + deliveryPrice) * (1 - discountPercentage / 100);
+
+        console.log(`\n====================== Detalle Cuenta ======================\n`);
+        console.log(`Total productos: $${productsPrice}.`);
+        console.log(`Total delivety: $${deliveryPrice}.`);
+        console.log(`Descuento: ${discountPercentage}%.`);
+        console.log(`-----------------------`);
+        console.log(`TOTAL: $${finalPrice}.`);
+        console.log(`\n============================================================`);
     });
 
 function imprimirEmpanadas(empanadas) {
