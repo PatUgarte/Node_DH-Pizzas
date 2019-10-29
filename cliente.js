@@ -113,7 +113,7 @@ inquirer
 
         let productsPrice = pizzaPrices[answers.clientPizzaSize] + drinkPrice;
         let discountPercentage = pizzaDiscounts[answers.clientPizzaSize];
-        let finalPrice = (productsPrice + deliveryPrice) * (1 - discountPercentage / 100);
+        let finalPrice = productsPrice * (1 - discountPercentage / 100) + deliveryPrice;
         console.log(`\n====================== Detalle Cuenta ======================\n`);
         console.log(`Total productos: $${productsPrice}.`);
         console.log(`Total delivety: $${deliveryPrice}.`);
@@ -129,14 +129,21 @@ inquirer
         console.log(`\nFecha: ${thisDate}`);
         console.log(`Hora: ${thisTime}`);
 
-        let newAnswers = {
+        let priceAnswers = {
+            clientProductsPrice: productsPrice,
+            clientDeliveryPrice: deliveryPrice,
+            clientTotalDiscount: discountPercentage
+        }
+
+        let dateAnswers = {
             clientPurchaseDate: thisDate,
             clientPurchaseTime: thisTime
         }
 
         let allTheAnswers = {
             ...answers,
-            ...newAnswers
+            ...priceAnswers,
+            ...dateAnswers
         }
 
         console.log(allTheAnswers);
