@@ -77,7 +77,7 @@ inquirer
         answers.clientConfirmDelivery ?
             console.log(`Dirección para la entrega del pedido: ${answers.clientAdress}.`)
             : console.log(`Nos indicaste que pasarás a retirar tu pedido por el local.`);
-        console.log(`\n=================== Productos Solicitados ===================\n`);
+        console.log(`\n=================== Productos solicitados ===================\n`);
         console.log(`\t> Pizza: ${answers.clientPizzaChoice}`);
         console.log(`\t> Tamaño: ${answers.clientPizzaSize}`);
         answers.clientConfirmDrink ?
