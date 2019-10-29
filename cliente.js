@@ -71,7 +71,8 @@ let questions = [
 
 inquirer
     .prompt(questions)
-    .then(
-        (answers) => {
-            console.log(answers);
-        });
+    .then(answers => {
+        console.log(`\n=================== Resumen de tu pedido ===================`);
+        console.log(`Tus datos son  -   Nombre: ${answers.clientName}   /   Teléfono: ${answers.clientPhone}`);
+
+    });
