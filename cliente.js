@@ -72,7 +72,28 @@ let questions = [
 inquirer
     .prompt(questions)
     .then(answers => {
-        console.log(`\n=================== Resumen de tu pedido ===================`);
-        console.log(`Tus datos son  -   Nombre: ${answers.clientName}   /   Teléfono: ${answers.clientPhone}`);
-
+        console.log(`\n=================== Resumen de tu pedido ===================\n`);
+        console.log(`Tus datos son  -   Nombre: ${answers.clientName}   /   Teléfono: ${answers.clientPhone}.`);
+        answers.clientConfirmDelivery ?
+            console.log(`Dirección para la entrega del pedido: ${answers.clientAdress}.`)
+            : console.log(`Nos indicaste que pasarás a retirar tu pedido por el local.`);
+        console.log(`\n=================== Productos Solicitados ===================\n`);
+        console.log(`\t> Pizza: ${answers.clientPizzaChoice}`);
+        console.log(`\t> Tamaño: ${answers.clientPizzaSize}`);
+        answers.clientConfirmDrink ?
+            console.log(`\t> Bebida: ${answers.clientDrink}`)
+            : "";
+        answers.clientConfirmUsualClient ?
+            answers.clientEmpanadasChoice.length > 0 ?
+                imprimirEmpanadas(answers.clientEmpanadasChoice)
+                : console.log(`\nSos un/a Cliente Habitual pero no estás llevando ninguna de las empanada de cortesía.`)
+            : console.log(`\nSi fueras un/a Cliente Habitual te entregaríamos hasta tres empanadas de cortesía con tu compra.`);
+        
     });
+
+function imprimirEmpanadas(empanadas) {
+    console.log(`\t> ${empanadas.length} empanada/s de regalo de:`);
+    for (let i = 0; i < empanadas.length; i++) {
+        console.log(`\t\t● ${empanadas[i]}.`);
+    }
+}
