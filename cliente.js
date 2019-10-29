@@ -4,10 +4,8 @@ const inquirer = require("inquirer");
 const fileSystem = require("fs");
 
 const jsonPath = __dirname + "/pedidos.json";
-
-let content = fileSystem.readFileSync(jsonPath, { encoding: "utf8" });
-// console.log(content);
-// console.log(typeof content);
+let jsonContent = fileSystem.readFileSync(jsonPath, { encoding: "utf8" });
+jsonContent = JSON.parse(jsonContent);
 
 let questions = [
     {
@@ -146,7 +144,12 @@ inquirer
             ...dateAnswers
         }
 
-        console.log(allTheAnswers);
+        //console.log(allTheAnswers);
+
+        jsonContent.push(allTheAnswers);
+        jsonContent = JSON.stringify(jsonContent);
+
+        fileSystem.writeFileSync(jsonPath,jsonContent);
 
     });
 
