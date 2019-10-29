@@ -88,10 +88,9 @@ inquirer
         }
 
         console.log(`\n=================== Productos solicitados ===================\n`);
-        //let sizeWithoutPrice = answers.clientPizzaChoice.split(" ")[0];
         console.log(`\t> Pizza: ${answers.clientPizzaChoice}`);
         console.log(`\t> Tamaño: ${answers.clientPizzaSize}`);
-        if(answers.clientConfirmDrink){
+        if (answers.clientConfirmDrink) {
             console.log(`\t> Bebida: ${answers.clientDrink}`)
             drinkPrice += 80;
         } else {
@@ -114,6 +113,10 @@ inquirer
         console.log(`TOTAL: $${finalPrice}.`);
         console.log(`\n============================================================\n`);
         console.log(`Gracias por comprar en DH Pizzas. Esperamos que disfrutes tu pedido.`);
+
+        let date = new Date();
+        console.log(`\nFecha: ${date.toLocaleDateString("latn")}`);
+        console.log(`Hora: ${date.toLocaleTimeString("en-US", { "hour12": true })}`);
     });
 
 function imprimirEmpanadas(empanadas) {
