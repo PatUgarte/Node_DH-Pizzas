@@ -106,14 +106,14 @@ inquirer
         let productsPrice = pizzaPrices[answers.clientPizzaSize] + drinkPrice;
         let discountPercentage = pizzaDiscounts[answers.clientPizzaSize];
         let finalPrice = (productsPrice + deliveryPrice) * (1 - discountPercentage / 100);
-
         console.log(`\n====================== Detalle Cuenta ======================\n`);
         console.log(`Total productos: $${productsPrice}.`);
         console.log(`Total delivety: $${deliveryPrice}.`);
         console.log(`Descuento: ${discountPercentage}%.`);
         console.log(`-----------------------`);
         console.log(`TOTAL: $${finalPrice}.`);
-        console.log(`\n============================================================`);
+        console.log(`\n============================================================\n`);
+        console.log(`Gracias por comprar en DH Pizzas. Esperamos que disfrutes tu pedido.`);
     });
 
 function imprimirEmpanadas(empanadas) {
