@@ -6,8 +6,8 @@ const fileSystem = require("fs");
 const jsonPath = __dirname + "/pedidos.json";
 
 let content = fileSystem.readFileSync(jsonPath, { encoding: "utf8" });
-console.log(content);
-console.log(typeof content);
+// console.log(content);
+// console.log(typeof content);
 
 let questions = [
     {
@@ -124,8 +124,23 @@ inquirer
         console.log(`Gracias por comprar en DH Pizzas. Esperamos que disfrutes tu pedido.`);
 
         let date = new Date();
-        console.log(`\nFecha: ${date.toLocaleDateString("latn")}`);
-        console.log(`Hora: ${date.toLocaleTimeString("en-US", { "hour12": true })}`);
+        let thisDate = date.toLocaleDateString("latn");
+        let thisTime = date.toLocaleTimeString("en-US", { "hour12": true });
+        console.log(`\nFecha: ${thisDate}`);
+        console.log(`Hora: ${thisTime}`);
+
+        let newAnswers = {
+            clientPurchaseDate: thisDate,
+            clientPurchaseTime: thisTime
+        }
+
+        let allTheAnswers = {
+            ...answers,
+            ...newAnswers
+        }
+
+        console.log(allTheAnswers);
+
     });
 
 function imprimirEmpanadas(empanadas) {
