@@ -8,6 +8,9 @@ if (!fileSystem.existsSync(pedidosJsonPath)) {
     fileSystem.appendFileSync(pedidosJsonPath, "[\n]");
 }
 
+let jsonContent = fileSystem.readFileSync(pedidosJsonPath, { encoding: "utf8" });
+jsonContent = JSON.parse(jsonContent);
+
 let questions = [
     {
         type: "input",
@@ -127,6 +130,27 @@ inquirer
         let thisTime = date.toLocaleTimeString("en-US", { "hour12": true });
         console.log(`\nFecha: ${thisDate}               Hora: ${thisTime}`);
         console.log();
+
+        let priceAnswers = {
+            clientProductsPrice: productsPrice,
+            clientDeliveryPrice: deliveryPrice,
+            clientTotalDiscount: discountPercentage,
+            clientFinalPayment: finalPrice,
+        }
+
+        let dateAnswers = {
+            clientPurchaseDate: thisDate,
+            clientPurchaseTime: thisTime,
+        }
+
+        let allTheAnswers = {
+            id: jsonContent.length + 1,
+            ...answers,
+            ...priceAnswers,
+            ...dateAnswers,
+        }
+
+        console.log(allTheAnswers);
 
     });
 
