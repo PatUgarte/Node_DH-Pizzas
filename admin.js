@@ -7,3 +7,9 @@ if (!fileSystem.existsSync(pedidosJsonPath)) {
 
 let jsonContent = fileSystem.readFileSync(pedidosJsonPath, { encoding: "utf8" });
 jsonContent = JSON.parse(jsonContent);
+
+if (jsonContent.length == 0){
+    console.log("Actualmente el sistema no tiene pedidos para generar el reporte.");
+} else {
+    // ...   
+}
