@@ -10,7 +10,8 @@
   "author": "Pat Ugarte",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "^7.0.0"
+    "inquirer": "^7.0.0",
+    "moment": "^2.24.0"
   },
   "devDependencies": {},
   "repository": {
