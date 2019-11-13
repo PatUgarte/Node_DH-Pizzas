@@ -1,5 +1,12 @@
 //Módulo instalado de terceros
 const inquirer = require("inquirer");
+//Módulo nativo
+const fileSystem = require("fs");
+
+const pedidosJsonPath = __dirname + "/pedidos.json";
+if (!fileSystem.existsSync(pedidosJsonPath)) {
+    fileSystem.appendFileSync(pedidosJsonPath, "[\n]");
+}
 
 let questions = [
     {
