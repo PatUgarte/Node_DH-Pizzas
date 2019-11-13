@@ -1,11 +1,5 @@
 //Módulo instalado de terceros
 const inquirer = require("inquirer");
-//Módulo nativo
-const fileSystem = require("fs");
-
-const jsonPath = __dirname + "/pedidos.json";
-let jsonContent = fileSystem.readFileSync(jsonPath, { encoding: "utf8" });
-jsonContent = JSON.parse(jsonContent);
 
 let questions = [
     {
@@ -107,14 +101,14 @@ inquirer
             answers.clientEmpanadasChoice.length > 0 ?
                 imprimirEmpanadas(answers.clientEmpanadasChoice)
                 : console.log(`\nSos un/a Cliente Habitual pero no estás llevando ninguna de las empanada de cortesía.`)
-            : console.log(`\nSi fueras un/a Cliente Habitual te entregaríamos hasta tres empanadas de cortesía con tu compra.`);
+            : console.log(`\nSi fueras un/a Cliente Habitual te llevarías hasta tres empanadas de cortesía con tu compra.`);
 
         let productsPrice = pizzaPrices[answers.clientPizzaSize] + drinkPrice;
         let discountPercentage = pizzaDiscounts[answers.clientPizzaSize];
         let finalPrice = productsPrice * (1 - discountPercentage / 100) + deliveryPrice;
         console.log(`\n====================== Detalle Cuenta ======================\n`);
         console.log(`Total productos: $${productsPrice}.`);
-        console.log(`Total delivety: $${deliveryPrice}.`);
+        console.log(`Total delivery: $${deliveryPrice}.`);
         console.log(`Descuento: ${discountPercentage}%.`);
         console.log(`-----------------------`);
         console.log(`TOTAL: $${finalPrice}.`);
@@ -124,32 +118,8 @@ inquirer
         let date = new Date();
         let thisDate = date.toLocaleDateString("latn");
         let thisTime = date.toLocaleTimeString("en-US", { "hour12": true });
-        console.log(`\nFecha: ${thisDate}`);
-        console.log(`Hora: ${thisTime}`);
-
-        let priceAnswers = {
-            clientProductsPrice: productsPrice,
-            clientDeliveryPrice: deliveryPrice,
-            clientTotalDiscount: discountPercentage
-        }
-
-        let dateAnswers = {
-            clientPurchaseDate: thisDate,
-            clientPurchaseTime: thisTime
-        }
-
-        let allTheAnswers = {
-            ...answers,
-            ...priceAnswers,
-            ...dateAnswers
-        }
-
-        //console.log(allTheAnswers);
-
-        jsonContent.push(allTheAnswers);
-        jsonContent = JSON.stringify(jsonContent);
-
-        fileSystem.writeFileSync(jsonPath,jsonContent);
+        console.log(`\nFecha: ${thisDate}               Hora: ${thisTime}`);
+        console.log();
 
     });
 
