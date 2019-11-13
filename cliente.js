@@ -143,14 +143,16 @@ inquirer
             clientPurchaseTime: thisTime,
         }
 
-        let allTheAnswers = {
+        let currentPurchase = {
             id: jsonContent.length + 1,
             ...answers,
             ...priceAnswers,
             ...dateAnswers,
         }
 
-        console.log(allTheAnswers);
+        jsonContent.push(currentPurchase);
+        jsonContent = JSON.stringify(jsonContent,null,2);
+        fileSystem.writeFileSync(pedidosJsonPath,jsonContent);
 
     });
 
