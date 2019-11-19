@@ -3,34 +3,36 @@ const moment = require("moment");
 
 const pedidosJsonPath = __dirname + "/pedidos.json";
 if (!fileSystem.existsSync(pedidosJsonPath)) {
-    fileSystem.appendFileSync(pedidosJsonPath, "[\n]");
+    fileSystem.appendFileSync(pedidosJsonPath, "[]");
 }
 
 let jsonContent = fileSystem.readFileSync(pedidosJsonPath, { encoding: "utf8" });
 jsonContent = JSON.parse(jsonContent);
-
 let amountOfSells = jsonContent.length;
 
-let fugazzettaCount = 0;
-let mozzarellaCount = 0;
-let napolitanaCount = 0;
-let calabresaCount = 0;
-let cuatroQuesosCount = 0;
-let provoloneCount = 0;
+function filterLength(category, value) {
+    let arrayCategory = jsonContent.filter((pedido) => pedido[category] == value);
+    return arrayCategory.length;
+}
 
-let deliveryCount = 0;
+let fugazzettaCount = filterLength("clientPizzaChoice", "Fugazzetta");
+let mozzarellaCount = filterLength("clientPizzaChoice", "Mozzarella");
+let napolitanaCount = filterLength("clientPizzaChoice", "Napolitana");
+let calabresaCount = filterLength("clientPizzaChoice", "Calabresa");
+let cuatroQuesosCount = filterLength("clientPizzaChoice", "Cuatro Quesos");
+let provoloneCount = filterLength("clientPizzaChoice", "Provolone");
 
-let individualCount = 0;
-let medianaCount = 0;
-let grandeCount = 0;
+let deliveryCount = filterLength("clientConfirmDelivery", true);
 
-let drinkCount = 0;
+let individualCount = filterLength("clientPizzaSize", "Individual");
+let medianaCount = filterLength("clientPizzaSize", "Mediana");
+let grandeCount = filterLength("clientPizzaSize", "Grande");
 
-let usualClientsCount = 0;
+let drinkCount = filterLength("clientConfirmDrink", true);
 
-let freeEmpanadasCount = 0;
+let usualClientsCount = filterLength("clientConfirmUsualClient", true);
 
-calculateQuantities(jsonContent);
+let freeEmpanadasCount = jsonContent.reduce((a, { clientEmpanadasChoice }) => a + (clientEmpanadasChoice ? clientEmpanadasChoice.length : 0),0);
 
 if (amountOfSells == 0) {
     console.log("Actualmente el sistema no tiene pedidos para generar el reporte.");
@@ -38,17 +40,17 @@ if (amountOfSells == 0) {
     console.log(`
 ¡Reporte generado con éxito!
 
-|===*** Reporte de ventas ***====|
+|================*** Reporte de ventas ***================|
     > Fecha de generación: ${moment().format("YYYY-MM-DD")}
     > Hora: ${moment().format("hh:mm:ss A")}
 
-|===*** Cantidad de pedidos realizados ***====|
+|========*** Cantidad de pedidos realizados ***===========|
     > Total: ${amountOfSells}
 
-|===*** Cantidad de pedidos para delivery ***====|
+|========*** Cantidad de pedidos para delivery ***========|
     > Total: ${deliveryCount}
 
-|===*** Cantidad de pizzas vendidas por gusto ***====|
+|======*** Cantidad de pizzas vendidas por gusto ***======|
     > Total Fugazzetta: ${fugazzettaCount}
     > Total Mozzarella: ${mozzarellaCount}
     > Total Napolitana: ${napolitanaCount}
@@ -56,98 +58,18 @@ if (amountOfSells == 0) {
     > Total Cuatro Quesos: ${cuatroQuesosCount}
     > Total Provolone: ${provoloneCount}
 
-|===*** Cantidad de pizzas vendidas por tamaño ***====|
+|======*** Cantidad de pizzas vendidas por tamaño ***=====|
     > Total Individuales: ${individualCount}
     > Total Medianas: ${medianaCount}
     > Total Grandes: ${grandeCount}
 
-|===*** Cantidad de pedidos con bebida ***====|
+|==========*** Cantidad de pedidos con bebida ***=========|
     > Total: ${drinkCount}
 
-|===*** Cantidad de clientes habituales ***====|
+|=========*** Cantidad de clientes habituales ***=========|
     > Total: ${usualClientsCount}
 
-|===*** Cantidad de empanadas regaladas ***====|
+|=========*** Cantidad de empanadas regaladas ***=========|
     > Total: ${freeEmpanadasCount}
 `);
-}
-
-function quantityOfPizzasByType(objectsArray) {
-    for (const { clientPizzaChoice } of objectsArray) {
-        switch (clientPizzaChoice) {
-            case "Fugazzetta":
-                fugazzettaCount++;
-                break;
-            case "Mozzarella":
-                mozzarellaCount++;
-                break;
-            case "Napolitana":
-                napolitanaCount++;
-                break;
-            case "Calabresa":
-                calabresaCount++;
-                break;
-            case "Cuatro Quesos":
-                cuatroQuesosCount++;
-                break;
-            case "Provolone":
-                provoloneCount++;
-                break;
-        }
-    }
-}
-
-function quantityOfDelivery(objectsArray) {
-    for (const { clientConfirmDelivery } of objectsArray) {
-        if (clientConfirmDelivery) {
-            deliveryCount++;
-        }
-    }
-}
-
-function quantityOfPizzasBySize(objectsArray) {
-    for (const { clientPizzaSize } of objectsArray) {
-        switch (clientPizzaSize) {
-            case "Individual":
-                individualCount++;
-                break;
-            case "Mediana":
-                medianaCount++;
-                break;
-            case "Grande":
-                grandeCount++;
-                break;
-        }
-    }
-}
-
-function quantityOfDrinks(objectsArray) {
-    for (const { clientConfirmDrink } of objectsArray) {
-        if (clientConfirmDrink) {
-            drinkCount++;
-        }
-    }
-}
-
-function quantityOfUsualClients(objectsArray) {
-    for (const { clientConfirmUsualClient } of objectsArray) {
-        if (clientConfirmUsualClient) {
-            usualClientsCount++;
-        }
-    }
-}
-
-function quantityOfEmpanadas(objectsArray) {
-    for (const { clientEmpanadasChoice } of objectsArray) {
-        clientEmpanadasChoice ? freeEmpanadasCount += clientEmpanadasChoice.length : "";
-    }
-}
-
-function calculateQuantities(jsonContent) {
-    quantityOfPizzasByType(jsonContent);
-    quantityOfDelivery(jsonContent);
-    quantityOfPizzasBySize(jsonContent);
-    quantityOfDrinks(jsonContent);
-    quantityOfUsualClients(jsonContent);
-    quantityOfEmpanadas(jsonContent);
 }

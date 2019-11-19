@@ -5,7 +5,7 @@ const fileSystem = require("fs");
 
 const pedidosJsonPath = __dirname + "/pedidos.json";
 if (!fileSystem.existsSync(pedidosJsonPath)) {
-    fileSystem.appendFileSync(pedidosJsonPath, "[\n]");
+    fileSystem.appendFileSync(pedidosJsonPath, "[]");
 }
 
 let jsonContent = fileSystem.readFileSync(pedidosJsonPath, { encoding: "utf8" });
