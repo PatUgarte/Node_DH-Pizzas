@@ -151,8 +151,8 @@ inquirer
         }
 
         jsonContent.push(currentPurchase);
-        jsonContent = JSON.stringify(jsonContent,null,2);
-        fileSystem.writeFileSync(pedidosJsonPath,jsonContent);
+        jsonContent = JSON.stringify(jsonContent, null, 2);
+        fileSystem.writeFileSync(pedidosJsonPath, jsonContent);
 
     });
 
